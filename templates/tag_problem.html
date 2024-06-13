@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problems List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>{{tag}}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Problem ID</th>
+                <th>Problem Name</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for problem in problems %}
+            <tr>
+                <td>{{ problem.contestId }}{{ problem.index }}</td>
+                <td>
+                    <a href="{{ problem.problem_url }}" class="problem-link {{ 'green-bg' if problem.verdict == 'OK' else 'red-bg' }}" target="_blank">
+                        {{ problem.name }}
+                    </a>
+                </td>
+                <td>{{ problem.rating }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

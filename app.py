@@ -17,7 +17,8 @@ def display_html_table():
         try:
             submissions = get_user_submissions(codeforces_id)
             filtered_problems = filter_submissions_by_tag(submissions, given_tag)
-            return  (filtered_problems)
+            # return  (filtered_problems)
+            return render_template('tag_problem.html', problems=filtered_problems,tag=given_tag)
         except:
             return'There was some Error'
     else:
@@ -45,6 +46,32 @@ def user():
     else:
         print(4)
         return render_template("first_page.html")
+    
+
+# @app.route('/problems')
+# def problems():
+#     # Sample data
+#     problems = [
+#         {
+#             "contestId": 965,
+#             "index": "A",
+#             "name": "Sample Problem A",
+#             "rating": 1200,
+#             "verdict": "OK",
+#             "problem_url": "https://codeforces.com/problemset/problem/965/A"
+#         },
+#         {
+#             "contestId": 965,
+#             "index": "B",
+#             "name": "Sample Problem B",
+#             "rating": 1500,
+#             "verdict": "WRONG_ANSWER",
+#             "problem_url": "https://codeforces.com/problemset/problem/965/B"
+#         },
+#         # Add more problems as needed
+#     ]
+#     return render_template('tag_problem.html', problems=problems ,tag='Binary Search')
+
        
 
 

@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+table {
+    width: 85%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    width: 33%; /* Set equal width for each column */
+}
+th {
+    background-color: #f2f2f2;
+}
+th, td {
+    border: none; /* Remove the border from table rows and columns */
+}
+th:nth-child(1), td:nth-child(1) {
+    width: 10%; /* Set smaller width for the first column */
+}
+th:nth-child(2), td:nth-child(2) {
+    width: 55%; /* Set larger width for the second column */
+}
+th:nth-child(3), td:nth-child(3) {
+    width: 20%; /* Set default width for the third column */
+}   
+.problem-link {
+    display: block;
+    padding: 8px;
+    color: rgb(255, 241, 241);
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.green-bg {
+    background-color: rgb(40, 137, 40);
+}
+.red-bg {
+    background-color: rgb(218, 66, 66);
+}
+.green-bg:hover {
+    background-color: darkgreen; /* Change background color to a darker green on hover */
+}
+.red-bg:hover {
+    background-color: rgb(205, 16, 16); /* Change background color to a darker red on hover */
+}

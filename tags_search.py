@@ -28,6 +28,7 @@ def filter_submissions_by_tag(submissions, given_tag):
                         "contestId": problem["contestId"],
                         "index": problem["index"],
                         "name": problem["name"],
+                        "rating":problem["rating"],
                         "verdict": verdict,
                         "problem_url": f"https://codeforces.com/problemset/problem/{problem['contestId']}/{problem['index']}"
                     }
