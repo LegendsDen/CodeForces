@@ -4,10 +4,25 @@ from codeforces_func import (get_contests, get_contest_problems,
                             generate_html_table)
 
 from tags_search import (filter_submissions_by_tag,get_recent_submissions,get_recent_solved_problems_by_friends)
+from flask_sqlalchemy import SQLAlchemy
 
                             
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///problems.db'
+db = SQLAlchemy(app)
+
+class StarredProblem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    codeforces_id = db.Column(db.String(50), nullable=False) 
+    contestId = db.Column(db.String(10), nullable=False)
+    index = db.Column(db.String(10), nullable=False)
+    name = db.Column(db.String(200), nullable=False)
+
+    def __repr__(self):
+        return f'<StarredProblem {self.codeforces_id}-{self.contestId}{self.index}>'
+
+
 
 @app.route("/hi",methods=['POST','GET'])
 def display_html_table():
@@ -17,6 +32,7 @@ def display_html_table():
         try:
             submissions = get_user_submissions(codeforces_id)
             filtered_problems = filter_submissions_by_tag(submissions, given_tag)
+            print(filtered_problems)
             # return  (filtered_problems)
             return render_template('tag_problem.html', problems=filtered_problems,tag=given_tag)
         except:
@@ -24,8 +40,6 @@ def display_html_table():
     else:
         print(2)
         return render_template("first_page.html")
-
-
 
 @app.route('/gg',methods=['POST','GET'])
 def user():
@@ -57,13 +71,39 @@ def data():
         given_tag=request.form['option']
         codeforces_id=request.form['content']
         try:
-            recent=get_recent_solved_problems_by_friends(api_key,secret,False,given_tag,codeforces_id)
-            # return recent    
+            
+            recent=get_recent_solved_problems_by_friends(api_key,secret,False,given_tag,codeforces_id)   
             return render_template('problems_by_friend_and_tag.html', problems=recent, tag=given_tag)
         except:
             return'There was some Error'
     else:
-        return render_template("first_page.html")  
+        return render_template("first_page.html") 
+
+@app.route("/add_star", methods=['POST'])
+def add_star():
+    data = request.get_json()
+    contestId = data['contestId']
+    index = data['index']
+    name = data['name']
+    print(name)
+    
+    if not StarredProblem.query.filter_by(contestId=contestId, index=index).first():
+        new_problem = StarredProblem(contestId=contestId, index=index, name=name)
+        db.session.add(new_problem)
+        db.session.commit()
+    return jsonify({'status': 'success'}) 
+
+@app.route("/remove_star", methods=['POST'])
+def remove_star():
+    data = request.get_json()
+    contestId = data['contestId']
+    index = data['index']
+    
+    problem = StarredProblem.query.filter_by(contestId=contestId, index=index).first()
+    if problem:
+        db.session.delete(problem)
+        db.session.commit()
+    return jsonify({'status': 'success'})
     
 
 # @app.route('/get_editorials', methods=['GET'])
@@ -98,4 +138,6 @@ def data():
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)

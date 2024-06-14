@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 # submissions = get_user_submissions(codeforces_id)
 def filter_submissions_by_tag(submissions, given_tag):
     filtered_problems_dict = {}
+    print(6)
 
     for submission in submissions:
         problem = submission.get("problem", {})
@@ -44,6 +45,7 @@ def filter_submissions_by_tag(submissions, given_tag):
     
     # Convert the dictionary to a list
     filtered_problems = list(filtered_problems_dict.values())
+    print(7)
     return filtered_problems
 
 # given_tag = "binary search"
@@ -102,6 +104,7 @@ def get_friends(api_key, secret, only_online):
         if data['status'] == 'OK':
             # Extract friends list
             friends = data['result']
+            print(1)
             return friends
         else:
             print(f"Error: {data['comment']}")
@@ -119,10 +122,11 @@ secret = "e25410caed229ba87bc07e545ccd0eec759f03fc"
 #     print(friends)
 
 def get_recent_submissions(handle):
-    url = f"https://codeforces.com/api/user.status?handle={handle}&from=1&count=1000"
+    url = f"https://codeforces.com/api/user.status?handle={handle}&from=1&count=300"
     response = requests.get(url)
     data = response.json()
     if data["status"] == "OK":
+        print(handle)
         return data["result"]
     return []
 
@@ -142,6 +146,7 @@ def check_user_submissions_for_problems(user_submissions, problems):
 
 
 def get_recent_solved_problems_by_friends(api_key, secret, only_online, given_tag,codeforces_id):
+    print(3)
     friends = get_friends(api_key, secret, only_online)
     unique_problems = {}
 
@@ -167,10 +172,12 @@ def get_recent_solved_problems_by_friends(api_key, secret, only_online, given_ta
     
     # Get the most recent 30 problems
     # print(sorted_problems)
+
     most_recent_30_problems = sorted_problems[:30]
-    print(most_recent_30_problems)
+    print(4)
     user_submissions=get_user_submissions(codeforces_id)
     check_user_submissions_for_problems(user_submissions, most_recent_30_problems)
+    print(5)
     return most_recent_30_problems
 
 

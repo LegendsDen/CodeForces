@@ -5,6 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Problems List</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
+    <script>
+        function toggleStar(contestId, index, name, element) {
+            var isStarred = $(element).hasClass('starred');
+            console.log(isStarred)
+            $.ajax({
+                url: isStarred ? '/remove_star' : '/add_star',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ contestId: contestId, index: index, name: name }),
+                success: function() {
+                    $(element).toggleClass('starred');
+                },
+                error: function() {
+                    alert('There was an error processing your request.');
+                }
+            });
+        }
+    </script>
+    <style>
+        .star {
+            cursor: pointer;
+            font-size: 30px;
+        }
+        .starred {
+            color: gold;
+        }
+    </style>
 </head>
 <body>
     <div class="legend-container">
@@ -18,13 +46,14 @@
         </div>
     </div>
     
-    <h2> Your Solved Problems in {{tag}}</h2>
+    <h2> Your Solved Problems in {{ tag }}</h2>
     <table>
         <thead>
             <tr>
                 <th>Problem ID</th>
                 <th>Problem Name</th>
                 <th>Rating</th>
+                <th>Star</th>
             </tr>
         </thead>
         <tbody>
@@ -37,13 +66,14 @@
                     </a>
                 </td>
                 <td>{{ problem.rating }}</td>
+                <td>
+                    <span class="star {{ 'starred' if problem.is_starred else '' }}" onclick="toggleStar('{{ problem.contestId }}', '{{ problem.index }}', '{{ problem.name }}', this)">
+                        &#9734;
+                    </span>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
 </html>
-
-
-
-
