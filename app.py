@@ -1,9 +1,9 @@
-from flask import Flask, render_template_string, request,render_template,redirect,session
+from flask import Flask, render_template_string, request,render_template,redirect,session,jsonify
 from codeforces_func import (get_contests, get_contest_problems,
                             get_user_submissions, build_table_data,
                             generate_html_table)
 
-from tags_search import (filter_submissions_by_tag)
+from tags_search import (filter_submissions_by_tag,get_recent_submissions,get_recent_solved_problems_by_friends)
 
                             
 
@@ -48,29 +48,46 @@ def user():
         return render_template("first_page.html")
     
 
-# @app.route('/problems')
-# def problems():
-#     # Sample data
-#     problems = [
-#         {
-#             "contestId": 965,
-#             "index": "A",
-#             "name": "Sample Problem A",
-#             "rating": 1200,
-#             "verdict": "OK",
-#             "problem_url": "https://codeforces.com/problemset/problem/965/A"
-#         },
-#         {
-#             "contestId": 965,
-#             "index": "B",
-#             "name": "Sample Problem B",
-#             "rating": 1500,
-#             "verdict": "WRONG_ANSWER",
-#             "problem_url": "https://codeforces.com/problemset/problem/965/B"
-#         },
-#         # Add more problems as needed
-#     ]
-#     return render_template('tag_problem.html', problems=problems ,tag='Binary Search')
+@app.route('/kk',methods=['POST','GET'])
+def data():
+    # codeforces_handle="Sushant81"
+    if request.method=='POST':
+        api_key = request.form['API_KEY']
+        secret = request.form['API_SECRET']
+        given_tag=request.form['option']
+        codeforces_id=request.form['content']
+        try:
+            recent=get_recent_solved_problems_by_friends(api_key,secret,False,given_tag,codeforces_id)
+            # return recent    
+            return render_template('problems_by_friend_and_tag.html', problems=recent, tag=given_tag)
+        except:
+            return'There was some Error'
+    else:
+        return render_template("first_page.html")  
+    
+
+# @app.route('/get_editorials', methods=['GET'])
+# def get_editorials():
+#     contest_id = request.args.get('contest_id')
+    
+#     if not contest_id:
+#         return jsonify({'error': 'Contest ID is required'}), 400
+
+#     problem_links = get_problem_links(contest_id)
+    
+#     if not problem_links:
+#         return jsonify({'error': 'Unable to fetch problem links'}), 404
+
+#     editorials = {}
+#     for problem_url in problem_links:
+#         problem_id = problem_url.split('/')[-1]
+#         editorial = scrape_editorial(problem_url)
+#         if editorial:
+#             editorials[problem_id] = editorial
+#         else:
+#             editorials[problem_id] = "Editorial not found or unable to scrape"
+    
+#     return jsonify(editorials), 200
 
        
 

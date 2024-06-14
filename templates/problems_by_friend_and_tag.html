@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problems List</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_friend.css') }}">
 </head>
 <body>
     <div class="legend-container">
         <div class="legend">
             <span class="color-box green-bg"></span>
-            <span>AC</span>
+            <span>Solved</span>
         </div>
         <div class="legend">
             <span class="color-box red-bg"></span>
-            <span>WA</span>
+            <span>Unsolved</span>
         </div>
     </div>
-    
-    <h2> Your Solved Problems in {{tag}}</h2>
+    <h2>Recent Solved Problems by your Friends in {{ tag }}</h2>
     <table>
         <thead>
             <tr>
                 <th>Problem ID</th>
                 <th>Problem Name</th>
                 <th>Rating</th>
+                <th>Friend Handle</th>
             </tr>
         </thead>
         <tbody>
@@ -32,18 +32,16 @@
             <tr>
                 <td>{{ problem.contestId }}{{ problem.index }}</td>
                 <td>
-                    <a href="{{ problem.problem_url }}" class="problem-link {{ 'green-bg' if problem.verdict == 'OK' else 'red-bg' }}" target="_blank">
+                    <a href="{{ problem.problem_url }}" class="problem-link {% if problem.user_solved %}green-bg{% else %}red-bg{% endif %}" target="_blank">
                         {{ problem.name }}
                     </a>
                 </td>
                 <td>{{ problem.rating }}</td>
+                <td>{{ problem.friend_handle }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    
 </body>
 </html>
-
-
-
-

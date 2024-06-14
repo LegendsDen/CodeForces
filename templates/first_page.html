@@ -14,13 +14,14 @@
         <input type="text" name="some_number" id="some_number">
         <br>
         <input type="submit" value="Submit">
+
       </form>
     </div>
 
      <div>
       <form action="/hi" method="POST">
         {% include 'common.html' %}
-        <label for="number-select">Choose a number:</label>
+        
         <select class="form-select" id="number-select" name="option" aria-label="Default select example" style="width: 150px;">
             <option selected disabled>Select Tag</option>
             <option value="2-sat">2-sat</option>
@@ -61,9 +62,63 @@
             <option value="two pointers">two pointers</option>
           
         </select>
-        <br><br>
+        <br>
         <input type="submit" value="Submit">
     </form>
+    </div>
+    <div>
+      <form action="/kk" method ="POST">
+        <label for="API_KEY">Enter API KEY</label>
+        <input type="text" name="API_KEY" id="API_KEY style=" style="width: 400px;">
+        <br>
+
+        <label for="API_SECRET">Enter API SECRET</label>
+        <input type="text" name="API_SECRET" id="API_SECRET" style="width: 400px;">
+        <br>
+        {% include 'common.html' %}
+        <select class="form-select" id="number-select" name="option" aria-label="Default select example" style="width: 150px;">
+            <option selected disabled>Select Tag</option>
+            <option value="2-sat">2-sat</option>
+            <option value="binary search">binary search</option>
+            <option value="bitmasks">bitmasks</option>
+            <option value="brute force">brute force</option>
+            <option value="chinese remainder theorem">chinese remainder theorem</option>
+            <option value="combinatorics">combinatorics</option>
+            <option value="constructive algorithms">constructive algorithms</option>
+            <option value="data structures">data structures</option>
+            <option value="dfs and similar">dfs and similar</option>
+            <option value="divide and conquer">divide and conquer</option>
+            <option value="dp">dp</option>
+            <option value="dsu">dsu</option>
+            <option value="expression parsing">expression parsing</option>
+            <option value="fft">fft</option>
+            <option value="flows">flows</option>
+            <option value="games">games</option>
+            <option value="geometry">geometry</option>
+            <option value="graph matchings">graph matchings</option>
+            <option value="graphs">graphs</option>
+            <option value="greedy">greedy</option>
+            <option value="hashing">hashing</option>
+            <option value="implementation">implementation </option>
+            <option value="interactive">interactive</option>
+            <option value="math">math</option>
+            <option value="matrices">matrices</option>
+            <option value="meet-in-the-middle">meet-in-the-middle</option>
+            <option value="number theory">number theory</option>
+            <option value="probabilities">probabilities</option>
+            <option value="schedules">schedules</option>
+            <option value="shortest paths">shortest paths</option>
+            <option value="sortings">sortings</option>
+            <option value="string suffix structures">string suffix structures</option>
+            <option value="strings">strings</option>
+            <option value="ternary search">ternary search</option>
+            <option value="trees">trees</option>
+            <option value="two pointers">two pointers</option>
+          
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+      </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
