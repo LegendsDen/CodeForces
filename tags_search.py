@@ -272,3 +272,53 @@ def get_recent_solved_problems_by_friends(api_key, secret, only_online, given_ta
 
 # # Print the plain text
 # print(plain_text)
+
+
+# def get_user_contests(handle, contest_num):
+#     # Fetch all contests
+#     contest_url = "https://codeforces.com/api/contest.list"
+#     contest_response = requests.get(contest_url)
+#     if contest_response.status_code != 200:
+#         print("Failed to load contests.")
+#         return []
+
+#     contest_data = contest_response.json()
+#     if contest_data["status"] != "OK":
+#         print(f"Error: {contest_data['comment']}")
+#         return []
+
+#     all_contests = contest_data["result"]
+
+#     # Fetch user's contest participation history
+#     user_url = f"https://codeforces.com/api/user.rating?handle={handle}"
+#     user_response = requests.get(user_url)
+#     if user_response.status_code != 200:
+#         print("Failed to load user's contest history.")
+#         return []
+
+#     user_data = user_response.json()
+#     if user_data["status"] != "OK":
+#         print(f"Error: {user_data['comment']}")
+#         return []
+
+#     user_contests = user_data["result"]
+#     user_contest_ids = {contest['contestId'] for contest in user_contests}
+
+#     # Filter contests to include only finished contests the user has participated in
+#     finished_user_contests = [
+#         contest for contest in all_contests
+#         if contest['id'] in user_contest_ids and contest['phase'] == 'FINISHED'
+#     ]
+
+#     # Sort contests by start time in descending order (most recent first)
+#     finished_user_contests.sort(key=lambda x: x['startTimeSeconds'], reverse=True)
+
+#     # Limit the number of contests
+#     return len(finished_user_contests)
+
+# Example usage
+# user_handle = "Sushant81"
+# number_of_contests = 10
+# contests = get_user_contests(user_handle, number_of_contests)
+# # for contest in contests:
+# print(contests)

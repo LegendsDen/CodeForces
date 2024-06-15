@@ -1,5 +1,9 @@
 body {
+    background-color: #121212;
+    color: #ffffff;
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
 }
 .legend-container {
     position: absolute;
@@ -22,18 +26,21 @@ body {
 }
 
 table {
-    width: 85%;
+    width: 100%;
     border-collapse: collapse;
+    background-color: #1e1e1e;
+    margin: 20px 0;
+
 }
 
 th, td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #333;
 }
 
 th {
-    background-color: #f4f4f4;
+    background-color: #333;
 }
 th, td {
     border: none; /* Remove the border from table rows and columns */
@@ -50,6 +57,9 @@ th:nth-child(3), td:nth-child(3) {
 th:nth-child(4), td:nth-child(4) {
     width: 20%; /* Set default width for the third column */
 } 
+th:nth-child(5), td:nth-child(5) {
+    width: 20%; /* Set default width for the third column */
+}
 
 .problem-link {
     text-decoration: none;
@@ -60,10 +70,11 @@ th:nth-child(4), td:nth-child(4) {
     text-decoration: underline;
 }
 
-.green-bg {
-    background-color: #d4edda; /* Light green */
+
+.problem-link.green-bg {
+    color: #4caf50;
 }
 
-.red-bg {
-    background-color: #f8d7da; /* Light red */
+.problem-link.red-bg {
+    color: #f44336;
 }

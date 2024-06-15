@@ -29,15 +29,15 @@ def display_html_table():
     if request.method=='POST':
         codeforces_id=request.form['content']# Replace with your Codeforces handle
         given_tag = request.form['option']
-        starred_problems = StarredProblem.query.filter_by(codeforces_id=codeforces_id).all()
-        starred_set = set((problem.contestId + problem.index) for problem in starred_problems)
+        # starred_problems = StarredProblem.query.filter_by(codeforces_id=codeforces_id).all()
+        # starred_set = set((problem.contestId + problem.index) for problem in starred_problems)
         # first_element = next(iter(starred_set), None)
         try:    
             submissions = get_user_submissions(codeforces_id)
             filtered_problems = filter_submissions_by_tag(submissions, given_tag)
             #here  database if exits then problem.starred=true
-            for problem in filtered_problems:
-                problem['starred'] = (str(problem['contestId']) + problem['index']) in starred_set
+            # for problem in filtered_problems:
+            #     problem['starred'] = (str(problem['contestId']) + problem['index']) in starred_set
             print  (filtered_problems)
             return render_template('tag_problem.html', problems=filtered_problems,tag=given_tag,codeforces_id=codeforces_id)
         except:
@@ -50,12 +50,11 @@ def display_html_table():
 def user():
     if request.method=='POST':
         codeforces_id=request.form['content']
-        con=int(request.form['some_number'])
         # return render_template('second_page.html')
         try:
             print(3)
-            contests = get_contests(con)
-            # print(contests)
+            contests = get_contests(codeforces_id)
+            print(contests)
             submissions = get_user_submissions(codeforces_id)
             table_data = build_table_data(contests, submissions)
             html_table = generate_html_table(table_data)
@@ -75,10 +74,13 @@ def data():
         secret = request.form['API_SECRET']
         given_tag=request.form['option']
         codeforces_id=request.form['content']
+        starred_problems = StarredProblem.query.filter_by(codeforces_id=codeforces_id).all()
+        starred_set = set((problem.contestId + problem.index) for problem in starred_problems)
         try:
-            
-            recent=get_recent_solved_problems_by_friends(api_key,secret,False,given_tag,codeforces_id)   
-            return render_template('problems_by_friend_and_tag.html', problems=recent, tag=given_tag)
+            recent=get_recent_solved_problems_by_friends(api_key,secret,False,given_tag,codeforces_id)  
+            for problem in recent:
+                problem['starred'] = ((str(problem['contestId'])) + problem['index']) in starred_set
+            return render_template('problems_by_friend_and_tag.html', problems=recent, tag=given_tag ,codeforces_id=codeforces_id)
         except:
             return'There was some Error'
     else:

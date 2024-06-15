@@ -5,16 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style_friend.css') }}">
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-KyZXEAg3QhqLMpG8r+Knujsl5/ITmWA6zlvR6qaUnrY=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
+    <script>
+        function toggleStar(contestId, index, name,codeforces_id,element) {
+            var isStarred = $(element).hasClass('starred');
+            // console.log(contestId)
+            // console.log(index)
+            // console.log(name)
+            // console.log(codeforces_id)
+            // console.log(element)
+            $.ajax({
+                url: isStarred ? '/remove_star' : '/add_star',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ contestId: contestId, index: index, name: name,codeforces_id:codeforces_id}),
+                success: function() {
+                    $(element).toggleClass('starred');
+                },
+                error: function() {
+                    alert('There was an error processing your request.');
+                }
+            });
+        }
+    </script>
+    <style>
+        .star {
+            cursor: pointer;
+            font-size: 30px;
+        }
+        .starred {
+            color: gold;
+        }
+    </style>
 </head>
 <body>
     <div class="legend-container">
-        <div class="legend">
-            <span class="color-box green-bg"></span>
+        <div class="legend" style="color: green;">
+            <!-- <span class="color-box .problem-link.green-bg"></span> -->
             <span>Solved</span>
         </div>
-        <div class="legend">
-            <span class="color-box red-bg"></span>
+        <div class="legend" style="color: red;">
+            <!-- <span class="color-box .problem-link.red-bg"></span> -->
             <span>Unsolved</span>
         </div>
     </div>
@@ -26,6 +57,7 @@
                 <th>Problem Name</th>
                 <th>Rating</th>
                 <th>Friend Handle</th>
+                <th>Favourites</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +71,12 @@
                 </td>
                 <td>{{ problem.rating }}</td>
                 <td>{{ problem.friend_handle }}</td>
+                <td>
+                    <span class="star {{ 'starred' if problem.starred else '' }}" onclick="toggleStar('{{ problem.contestId }}', '{{ problem.index }}', '{{ problem.name }}','{{codeforces_id}}',this)">
+                        &#9734;
+                    </span>
+                </td>
+
             </tr>
             {% endfor %}
         </tbody>

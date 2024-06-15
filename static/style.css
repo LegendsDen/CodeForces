@@ -1,6 +1,9 @@
 body {
+    background-color: #121212;
+    color: #ffffff;
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
+    padding: 20px;
 }
 .legend-container {
     position: absolute;
@@ -23,17 +26,19 @@ body {
 }
 
 table {
-    width: 95%;
+    width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    background-color: #1e1e1e;
 }
 th, td {
     padding: 8px;
     text-align: left;
     width: 33%; /* Set equal width for each column */
+    border-bottom: 1px solid #333;
 }
 th {
-    background-color: #f2f2f2;
+    background-color: #333;
 }
 th, td {
     border: none; /* Remove the border from table rows and columns */
@@ -51,21 +56,16 @@ th:nth-child(4), td:nth-child(4) {
     width: 15%; /* Set default width for the third column */
 }  
 .problem-link {
-    display: block;
-    padding: 8px;
-    color: rgb(255, 241, 241);
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    color: inherit;
 }
-.green-bg {
-    background-color: rgb(40, 137, 40);
+.problem-link:hover {
+    text-decoration: underline;
 }
-.red-bg {
-    background-color: rgb(218, 66, 66);
+.problem-link.green-bg {
+    color: #4caf50;
 }
-.green-bg:hover {
-    background-color: darkgreen; /* Change background color to a darker green on hover */
-}
-.red-bg:hover {
-    background-color: rgb(205, 16, 16); /* Change background color to a darker red on hover */
+
+.problem-link.red-bg {
+    color: #f44336;
 }

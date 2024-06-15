@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Problems List</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
     <script>
         function toggleStar(contestId, index, name,codeforces_id,element) {
             var isStarred = $(element).hasClass('starred');
@@ -33,28 +33,29 @@
         .starred {
             color: gold;
         }
-    </style>
+    </style> -->
 </head>
 <body>
     <div class="legend-container">
-        <div class="legend">
-            <span class="color-box green-bg"></span>
+        <div class="legend" style="color: green;">
+            <!-- <span class="color-box green-bg"></span> -->
             <span>AC</span>
         </div>
-        <div class="legend">
-            <span class="color-box red-bg"></span>
+        <div class="legend" style="color: red;">
+            <!-- <span class="color-box red-bg"></span> -->
+
             <span>WA</span>
         </div>
     </div>
     
-    <h2> Your Solved Problems in {{ tag }}</h2>
+    <h2> {{codeforces_id}} Solved Problems in {{ tag }}</h2>
     <table>
         <thead>
             <tr>
                 <th>Problem ID</th>
                 <th>Problem Name</th>
                 <th>Rating</th>
-                <th>Favourites</th>
+                <!-- <th>Favourites</th> -->
             </tr>
         </thead>
         <tbody>
@@ -67,11 +68,11 @@
                     </a>
                 </td>
                 <td>{{ problem.rating }}</td>
-                <td>
+                <!-- <td>
                     <span class="star {{ 'starred' if problem.starred else '' }}" onclick="toggleStar('{{ problem.contestId }}', '{{ problem.index }}', '{{ problem.name }}','{{codeforces_id}}',this)">
                         &#9734;
                     </span>
-                </td>
+                </td> -->
             </tr>
             {% endfor %}
         </tbody>
