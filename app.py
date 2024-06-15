@@ -50,10 +50,11 @@ def display_html_table():
 def user():
     if request.method=='POST':
         codeforces_id=request.form['content']
+        contest_num=int(request.form['some_number'])
         # return render_template('second_page.html')
         try:
             print(3)
-            contests = get_contests(codeforces_id)
+            contests = get_contests(contest_num)
             print(contests)
             submissions = get_user_submissions(codeforces_id)
             table_data = build_table_data(contests, submissions)
