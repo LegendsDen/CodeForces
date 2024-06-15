@@ -7,14 +7,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
     <script>
-        function toggleStar(contestId, index, name, element) {
+        function toggleStar(contestId, index, name,codeforces_id,element) {
             var isStarred = $(element).hasClass('starred');
             console.log(isStarred)
+            console.log(codeforces_id)
             $.ajax({
                 url: isStarred ? '/remove_star' : '/add_star',
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ contestId: contestId, index: index, name: name }),
+                data: JSON.stringify({ contestId: contestId, index: index, name: name,codeforces_id:codeforces_id}),
                 success: function() {
                     $(element).toggleClass('starred');
                 },
@@ -53,7 +54,7 @@
                 <th>Problem ID</th>
                 <th>Problem Name</th>
                 <th>Rating</th>
-                <th>Star</th>
+                <th>Favourites</th>
             </tr>
         </thead>
         <tbody>
@@ -67,7 +68,7 @@
                 </td>
                 <td>{{ problem.rating }}</td>
                 <td>
-                    <span class="star {{ 'starred' if problem.is_starred else '' }}" onclick="toggleStar('{{ problem.contestId }}', '{{ problem.index }}', '{{ problem.name }}', this)">
+                    <span class="star {{ 'starred' if problem.starred else '' }}" onclick="toggleStar('{{ problem.contestId }}', '{{ problem.index }}', '{{ problem.name }}','{{codeforces_id}}',this)">
                         &#9734;
                     </span>
                 </td>

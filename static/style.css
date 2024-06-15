@@ -23,7 +23,7 @@ body {
 }
 
 table {
-    width: 85%;
+    width: 95%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
@@ -39,14 +39,17 @@ th, td {
     border: none; /* Remove the border from table rows and columns */
 }
 th:nth-child(1), td:nth-child(1) {
-    width: 10%; /* Set smaller width for the first column */
+    width: 15%; /* Set smaller width for the first column */
 }
 th:nth-child(2), td:nth-child(2) {
-    width: 55%; /* Set larger width for the second column */
+    width: 65%; /* Set larger width for the second column */
 }
 th:nth-child(3), td:nth-child(3) {
     width: 20%; /* Set default width for the third column */
-}   
+} 
+th:nth-child(4), td:nth-child(4) {
+    width: 15%; /* Set default width for the third column */
+}  
 .problem-link {
     display: block;
     padding: 8px;

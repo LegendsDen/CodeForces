@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 
 class StarredProblem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    codeforces_id = db.Column(db.String(50), nullable=False) 
+    codeforces_id = db.Column(db.String(50), nullable=False)
     contestId = db.Column(db.String(10), nullable=False)
     index = db.Column(db.String(10), nullable=False)
     name = db.Column(db.String(200), nullable=False)
@@ -29,12 +29,17 @@ def display_html_table():
     if request.method=='POST':
         codeforces_id=request.form['content']# Replace with your Codeforces handle
         given_tag = request.form['option']
-        try:
+        starred_problems = StarredProblem.query.filter_by(codeforces_id=codeforces_id).all()
+        starred_set = set((problem.contestId + problem.index) for problem in starred_problems)
+        # first_element = next(iter(starred_set), None)
+        try:    
             submissions = get_user_submissions(codeforces_id)
             filtered_problems = filter_submissions_by_tag(submissions, given_tag)
-            print(filtered_problems)
-            # return  (filtered_problems)
-            return render_template('tag_problem.html', problems=filtered_problems,tag=given_tag)
+            #here  database if exits then problem.starred=true
+            for problem in filtered_problems:
+                problem['starred'] = (str(problem['contestId']) + problem['index']) in starred_set
+            print  (filtered_problems)
+            return render_template('tag_problem.html', problems=filtered_problems,tag=given_tag,codeforces_id=codeforces_id)
         except:
             return'There was some Error'
     else:
@@ -82,13 +87,14 @@ def data():
 @app.route("/add_star", methods=['POST'])
 def add_star():
     data = request.get_json()
+    codeforces_id = data['codeforces_id']
     contestId = data['contestId']
     index = data['index']
     name = data['name']
     print(name)
     
-    if not StarredProblem.query.filter_by(contestId=contestId, index=index).first():
-        new_problem = StarredProblem(contestId=contestId, index=index, name=name)
+    if not StarredProblem.query.filter_by(codeforces_id=codeforces_id,contestId=contestId, index=index).first():
+        new_problem = StarredProblem(codeforces_id=codeforces_id,contestId=contestId, index=index, name=name)
         db.session.add(new_problem)
         db.session.commit()
     return jsonify({'status': 'success'}) 
@@ -96,10 +102,12 @@ def add_star():
 @app.route("/remove_star", methods=['POST'])
 def remove_star():
     data = request.get_json()
+    codeforces_id = data['codeforces_id']
     contestId = data['contestId']
     index = data['index']
+
     
-    problem = StarredProblem.query.filter_by(contestId=contestId, index=index).first()
+    problem = StarredProblem.query.filter_by(codeforces_id=codeforces_id,contestId=contestId, index=index).first()
     if problem:
         db.session.delete(problem)
         db.session.commit()
