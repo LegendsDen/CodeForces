@@ -46,7 +46,7 @@ def display_html_table():
         print(2)
         return render_template("first_page.html")
 
-@app.route('/gg',methods=['POST','GET'])
+@app.route('/codeforces_helpers',methods=['POST','GET'])
 def user():
     if request.method=='POST':
         codeforces_id=request.form['content']
