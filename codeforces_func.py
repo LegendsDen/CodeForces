@@ -1,6 +1,16 @@
 import requests
 from functools import lru_cache
 import json
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures, MinMaxScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, LSTM, Dropout, Bidirectional
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+
 
 
 @lru_cache(maxsize=None)
@@ -179,6 +189,123 @@ def generate_html_table(table_data):
 
     # Close the HTML table tag
     html_table += '</tbody>\n</table>'
+
+    return html_table
+
+
+def save_plot_as_image(df, y_pred, all_contest_ids, all_ratings):
+    plt.figure(figsize=(12, 6))
+    plt.plot(df['Contest Number'], df['Rating'], 'o', label='Actual Ratings')
+    plt.plot(df['Contest Number'], y_pred, label='Expected Ratings', linestyle='solid')
+    plt.plot(all_contest_ids, all_ratings, label='Predicted Ratings (LSTM)', linestyle='--')
+    plt.xlabel('Contest ID')
+    plt.ylabel('Rating')
+    plt.title('User Skill Progression Analysis using LSTM')
+    plt.legend()
+    plt.savefig('static/plot.png')
+    plt.close()
+
+def fetch_user_ratings(user_handle):
+    url = f"https://codeforces.com/api/user.rating?handle={user_handle}"
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise Exception("Failed to fetch data from Codeforces API")
+    
+    data = response.json()
+    if data['status'] != 'OK':
+        raise Exception("Failed to fetch data: " + data['comment'])
+    
+    return data['result']
+
+def process_and_predict(codeforces_id, contest_num):
+    # Fetch data for a specific user
+    ratings_data = fetch_user_ratings(codeforces_id)
+    
+    # Process data into a DataFrame
+    df = pd.DataFrame(ratings_data)
+    df = df[['contestId', 'newRating']]
+    df.rename(columns={'contestId': 'Contest ID',  'newRating': 'Rating'}, inplace=True)
+    df['Contest Number'] = range(1, len(df) + 1)
+
+    # Apply Polynomial Regression
+    X = df[['Contest Number']]
+    y = df['Rating']
+    poly = PolynomialFeatures(degree=3)
+    X_poly = poly.fit_transform(X)
+    model = LinearRegression()
+    model.fit(X_poly, y)
+    y_pred = model.predict(X_poly)
+
+    # Scale the ratings for LSTM model
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaled_data = scaler.fit_transform(df['Rating'].values.reshape(-1, 1))
+
+    # Prepare the data for LSTM
+    def create_dataset(data, time_step=1):
+        X, Y = [], []
+        for i in range(len(data) - time_step):
+            a = data[i:(i + time_step), 0]
+            X.append(a)
+            Y.append(data[i + time_step, 0])
+        return np.array(X), np.array(Y)
+
+    time_step = 5
+    X, y = create_dataset(scaled_data, time_step)
+    X = X.reshape(X.shape[0], X.shape[1], 1)
+
+    # Split the data into training and validation sets
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Build the LSTM model
+    model = Sequential()
+    model.add(Bidirectional(LSTM(50, return_sequences=True), input_shape=(time_step, 1)))
+    model.add(Dropout(0.2))
+    model.add(Bidirectional(LSTM(50, return_sequences=False)))
+    model.add(Dropout(0.2))
+    model.add(Dense(1))
+    model.compile(optimizer='adam', loss='mean_squared_error')
+
+    # Implement Early Stopping and Learning Rate Reduction
+    early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=0.0001)
+
+    # Train the LSTM model
+    history = model.fit(X_train, y_train, epochs=100, batch_size=1, verbose=2, validation_data=(X_val, y_val), callbacks=[early_stop, reduce_lr])
+
+    # Predict ratings for the existing data
+    train_predict = model.predict(X)
+    train_predict = scaler.inverse_transform(train_predict)
+
+    # Predict ratings for the next 5 contests
+    future_contests = 5
+    input_data = scaled_data[-time_step:].reshape(1, time_step, 1)
+    predicted_ratings = []
+
+    for _ in range(future_contests):
+        predicted_rating = model.predict(input_data)
+        predicted_ratings.append(predicted_rating[0, 0])
+        input_data = np.append(input_data[:, 1:, :], predicted_rating.reshape(1, 1, 1), axis=1)
+
+    predicted_ratings = scaler.inverse_transform(np.array(predicted_ratings).reshape(-1, 1))
+
+    # Combine current and future data for plotting
+    all_contest_ids = np.arange(1, len(df) + 1 + future_contests)
+    all_ratings = np.concatenate([df['Rating'].values, predicted_ratings.flatten()])
+
+    # Save the plot
+    save_plot_as_image(df, y_pred, all_contest_ids, all_ratings)
+
+    # Generate the table data
+    contests = get_contests(contest_num)
+    print(5)
+    submissions = get_user_submissions(codeforces_id)
+
+    print(6)
+    table_data = build_table_data(contests, submissions)
+
+    # Generate HTML table
+    html_table = generate_html_table(table_data)
+    print(4)
 
     return html_table
 

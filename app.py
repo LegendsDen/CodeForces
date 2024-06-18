@@ -1,7 +1,7 @@
 from flask import Flask, render_template_string, request,render_template,redirect,session,jsonify
 from codeforces_func import (get_contests, get_contest_problems,
                             get_user_submissions, build_table_data,
-                            generate_html_table)
+                            generate_html_table,process_and_predict)
 
 from tags_search import (filter_submissions_by_tag,get_recent_submissions,get_recent_solved_problems_by_friends)
 from flask_sqlalchemy import SQLAlchemy
@@ -46,7 +46,7 @@ def display_html_table():
         print(2)
         return render_template("first_page.html")
 
-@app.route('/codeforces_helpers',methods=['POST','GET'])
+@app.route('/gg',methods=['POST','GET'])
 def user():
     if request.method=='POST':
         codeforces_id=request.form['content']
@@ -54,12 +54,8 @@ def user():
         # return render_template('second_page.html')
         try:
             print(3)
-            contests = get_contests(contest_num)
-            print(contests)
-            submissions = get_user_submissions(codeforces_id)
-            table_data = build_table_data(contests, submissions)
-            html_table = generate_html_table(table_data)
-            return render_template_string(html_table)
+            html_table = process_and_predict(codeforces_id, contest_num)
+            return render_template('results.html', table=html_table)
         except:
             return'There was some Error'
     else:

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Skill Progression Results</title>
+</head>
+<body>
+    <h1>User Skill Progression Analysis</h1>
+    <h2>Results Table</h2>
+    {{ table | safe }}
+    <h2>Progression Plot</h2>
+    <img src="{{ url_for('static', filename='plot.png') }}" alt="User Skill Progression Plot">
+</body>
+</html>
