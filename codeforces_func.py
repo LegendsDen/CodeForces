@@ -69,9 +69,8 @@ def get_contests(contest_num):
         return []
     
     contests = data["result"]
-
-
-    return contests[:contest_num]
+    finished_contests = [contest for contest in contests if contest['phase'] == 'FINISHED']
+    return finished_contests[:contest_num]
 
 @lru_cache(maxsize=None)
 def get_contest_problems(contest_id):
