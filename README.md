@@ -18,11 +18,11 @@ To run the program
         python app.py
 
 # Some images from the website 
-Contest Performance 
+### Contest Performance 
 <img src="./img/Screenshot 2024-07-17 000723.png" alt="Contest Performance" height ="400" width="700">
 
 
-Future Rating
+### Future Rating
 <img src="./img/Screenshot 2024-07-17 000739.png" alt="Future Rating" height ="400" width="700">
 
 
