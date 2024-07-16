@@ -26,6 +26,13 @@ To run the program
 <img src="./img/Screenshot 2024-07-17 000739.png" alt="Future Rating" height ="400" width="700">
 
 
+### User Probems sort by Tags
+<img src="./img/Screenshot 2024-07-17 000834.png" alt="User Problem" height ="400" width="700">
+
+### Friends recent problems sort by tags
+<img src="./img/Screenshot 2024-07-17 001025.png" alt="Friends Problem" height ="400" width="700">
+
+
 # Contributing
 Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
 
