@@ -19,7 +19,7 @@ To run the program
 
 # Some images from the website 
 Contest Performance 
-<img src="./img/Screenshot 2024-07-17 000723.png" alt="Contest Performance" height ="400" width="600">
+<img src="./img/Screenshot 2024-07-17 000723.png" alt="Contest Performance" height ="400" width="700">
 
 
 Future Rating
