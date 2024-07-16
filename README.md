@@ -23,7 +23,7 @@ Contest Performance
 
 
 Future Rating
-<img src="./img/Screenshot 2024-07-17 000739.png" alt="Future Rating" height ="600" width="400">
+<img src="./img/Screenshot 2024-07-17 000739.png" alt="Future Rating" height ="400" width="700">
 
 
 # Contributing
