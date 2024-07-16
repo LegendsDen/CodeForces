@@ -9,13 +9,13 @@ Codeforces Helper is a dynamic web application built using Flask that allows use
 4. Future Rating Prediction: Predicts future ratings using LSTM models.
 
 # Installation 
-Clone the repo -->git clone https://github.com/LegendsDen/CodeForces.git 
-To run the program
-        python -m venv env
-        .\env\Scripts\activate.ps1
-        source env/bin/activate
-        pip install -r requirements.txt
-        python app.py
+        Clone : https://github.com/LegendsDen/CodeForces.git 
+        enivironmnet : python -m venv env
+                     : .\env\Scripts\activate.ps1
+                     : source env/bin/activate
+        run : pip install -r requirements.txt
+                : python app.py
+
 
 # Some images from the website 
 ### Contest Performance 
