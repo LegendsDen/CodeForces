@@ -17,6 +17,14 @@ To run the program
         pip install -r requirements.txt
         python app.py
 
+# Some images from the website 
+Contest Performance 
+<img src="./img/Screenshot 2024-07-17 000723.png" alt="Contest Performance" height ="600" width="400">
+
+
+Future Rating
+<img src="./img/Screenshot 2024-07-17 000739.png" alt="Future Rating" height ="600" width="400">
+
 
 # Contributing
 Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
